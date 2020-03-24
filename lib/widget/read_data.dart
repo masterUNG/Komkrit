@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:kritproduct/models/read_data_model.dart';
 import 'package:kritproduct/models/result_model.dart';
 import 'package:kritproduct/models/user_model.dart';
@@ -67,7 +68,7 @@ class _ReadDataState extends State<ReadData> {
       child: Column(
         children: <Widget>[
           showAmcName(index),
-          Text(resultModels[index].balanceUnit.toString()),
+          showBaanceUnit(index),
           Text(resultModels[index].avgCost.toString()),
           Text(resultModels[index].avgCostUnit.toString()),
         ],
@@ -75,9 +76,31 @@ class _ReadDataState extends State<ReadData> {
     );
   }
 
+  Widget showBaanceUnit(int index) {
+    double balanceUnit = resultModels[index].balanceUnit;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Text(
+          myFormat(balanceUnit, 'BalanceUnit ='),
+        ),
+      ],
+    );
+  }
+
+  String myFormat(double myDouble, String title) {
+    
+    NumberFormat numberFormat = NumberFormat('#,###.####');
+    return numberFormat.format(myDouble);
+
+    // return '$title ${myDouble.toStringAsFixed(myDouble.truncateToDouble() == myDouble ? 0 : 2)}';
+
+  }
+
   Widget showAmcName(int index) => Row(
         children: <Widget>[
-          Container(width: MediaQuery.of(context).size.width - 10,
+          Container(
+            width: MediaQuery.of(context).size.width - 10,
             child: Text(
               resultModels[index].amcName,
               style: TextStyle(
